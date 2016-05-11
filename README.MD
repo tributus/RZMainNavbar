@@ -18,7 +18,7 @@ html:
 
 Javascript:
 var params = {...}
-var widgetInstance = ruteZangada.renderWidget("MainNavbar", "elementID", params);
+var widgetInstance = ruteZangada.renderWidget("rzMainNavbar", "elementID", params);
 ```
 ##Params
     var params = {
