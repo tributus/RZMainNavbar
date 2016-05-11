@@ -1,0 +1,23 @@
+{
+  "name": "rutezangada-mainnavbarwidget",
+  "authors": [
+    "Anderson Norberto Santos <andersonhtm@hotmail.com>"
+  ],
+  "description": "widget para navbar principal do sistema",
+  "main": "",
+  "keywords": [
+    "nav",
+    "navbar",
+    "menu",
+    "widget"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
