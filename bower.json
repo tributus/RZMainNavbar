@@ -21,6 +21,7 @@
     "tests"
   ],
   "devDependencies": {
-    "RZClientEngine": "rutezangada-client-engine#^0.0.8"
+    "RZClientEngine": "rutezangada-client-engine#^0.0.8",
+    "rutezangada-searchdataplugin": "^0.2.0"
   }
 }

@@ -19,5 +19,12 @@
   "bugs": {
     "url": "https://github.com/tributus/RZMainNavbar/issues"
   },
-  "homepage": "https://github.com/tributus/RZMainNavbar#readme"
+  "homepage": "https://github.com/tributus/RZMainNavbar#readme",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-less": "^1.3.0",
+    "grunt-contrib-uglify": "^1.0.1"
+  }
 }

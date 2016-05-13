@@ -1,90 +1,118 @@
 module.exports = function (grunt) {
+    var mode = 'dbg';
     grunt.initConfig({
             options: {
                 srcFiles: [
-                    "src/NamespaceDeclares.js",
-                    "src/RuteZangada.js",
-                    "src/WidgetEngine.js"
+                    "src/MainNavbarWidgetHelpers.js",
+                    "src/MainNavbar.RenderingHelpers.js",
+                    "src/MainNavbarWidget.js"
                 ],
-                test: {
-                    getFilesToTest: function () {
-                        return this.generateFileRefs('test/src/*.js', 'src');
-                    },
-                    getSpecs: function () {
-                        return this.generateFileRefs('test/spec/*.spec.js', 'spec');
-                    },
-                    getLibs: function () {
-                        var $this = this;
-                        var libs = [
-                            "lib/jquery-2.1.4.min.js"
-                        ];
-                        var output = '';
-                        libs.forEach(function (it) {
-                            output += $this.generateFileRefs(it, 'lib');
-                        });
-                        return output;
-                    },
-                    generateFileRefs: function (src, dest) {
-                        var basestr = '<script type="text/javascript" src="#/*"></script>\n    ';
+                setupCSSRefs: function () {
+                    var fname = (mode=='min')?"RZMainNavbar.min.css":"RZMainNavbar.css";
+                    return '<link href="../dist/*" rel="stylesheet" type="text/css" media="all"/>'.replace("*",fname);
+                },
+                setupJSRefs: function (js_files) {
+                    if (mode=="dbg") {
+                        var basestr = '<script src="../*" type="text/javascript"></script>\n        ';
                         var jsDeclarations = '';
-                        grunt.file.expand({}, src).forEach(function (path) {
-                            var fileParts = path.split('/');
-                            var fileName = fileParts[fileParts.length - 1];
-                            jsDeclarations += basestr.replace("*", fileName).replace("#", dest);
+                        js_files.forEach(function (item) {
+                            //var fileParts = item.split('/');
+                            //jsDeclarations += basestr.replace("*", fileParts[fileParts.length - 1]);
+                            jsDeclarations += basestr.replace("*", item);
                         });
                         return jsDeclarations;
+                    }
+                    else {
+                        var js = (mode=='min') ? "RZMainNavbar.min.js":"RZMainNavbar.js";
+                        return '<script src="../dist/*" type="text/javascript"></script>'.replace("*",js);
                     }
                 }
             },
             concat: {
                 dist: {
                     src: ['<%= options.srcFiles %>'],
-                    dest: "dist/RZClientEngine.js"
+                    dest: "dist/RZMainNavbar.js"
                 }
             },
             uglify: {
                 options: {
                     mangle: false
-                },
+                }
+                ,
                 my_target: {
                     files: {
-                        "dist/RZClientEngine.min.js": ['dist/RZClientEngine.js']
+                        "dist/RZMainNavbar.min.js": ['dist/RZMainNavbar.js']
                     }
                 }
             },
-            copy: {
-                test: {
-                    src: 'dist/RZClientEngine.js',
-                    dest: 'test/src/RZClientEngine.js'
-                },
-                test_template: {
+            less: {
+                default: {
                     options: {
-                        processContent: function (content) {
-                            return grunt.template.process(content);
-                        }
+                        compress: false
                     },
-                    src: 'test/template/SpecRunner.html.ejs',
-                    dest: 'test/SpecRunner.html'
+                    files: {
+                        'dist/RZMainNavbar.css': 'src/style/style.less'
+                    }
+                },
+                compact: {
+                    options: {
+                        compress: true
+                    },
+                    files: {
+                        'dist/RZMainNavbar.min.css': 'src/style/style.less'
+                    }
                 }
             },
-            jasmine: {
-                    src: 'test/src/*.js',
-                    options: {
-                        specs: 'test/spec/*.spec.js',
-                        helpers: 'test/specs/helpers/*.js',
-                        vendor:['test/lib/*.js']
+        copy:{
+            html_debug: {
+                options: {
+                    processContent: function (content) {
+                        mode = 'dbg';
+                        return grunt.template.process(content);
                     }
+                },
+                src: 'src/demo-templates/demo.html.ejs',
+                dest: 'demo/index-dbg.html'
+            },
+            html_min: {
+                options: {
+                    processContent: function (content) {
+                        mode = 'min';
+                        return grunt.template.process(content);
+                    }
+                },
+                src: 'src/demo-templates/demo.html.ejs',
+                dest: 'demo/index-min.html'
+            },
+            html_default: {
+                options: {
+                    processContent: function (content) {
+                        mode = 'default';
+                        return grunt.template.process(content);
+                    }
+                },
+                src: 'src/demo-templates/demo.html.ejs',
+                dest: 'demo/index.html'
             }
+            /*,demo_js:{
+                expand:true,
+                flatten:true,
+                filter:'isFile',
+                src: ['<%= options.srcFiles %>','dist/RZMainNavbar.min.css','dist/RZMainNavbar.css','dist/RZMainNavbar.min.js','dist/RZMainNavbar.js'],
+                dest: "demo/"
+
+            }*/
         }
-    );
+        }
+    )
+    ;
 // Plugins do Grunt
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-jasmine');
- 
- 
-    grunt.registerTask('default', ['concat', 'uglify', 'copy:test', 'copy:test_template']);
-    grunt.registerTask('test', ['jasmine']);
- 
-};
+
+    grunt.registerTask('default', ['concat', 'uglify', 'less','copy']);
+
+}
+;
