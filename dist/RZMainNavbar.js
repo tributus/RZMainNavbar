@@ -168,7 +168,7 @@ rz.widgets.MainNavbarWidget = ruteZangada.widget("rzMainNavbar", rz.widgets.RZMa
                 displayUserMenu:true                                       //defines if user menu will be displayed
             },
             language:{
-                avoidable2:"cuss",
+                avoidable2:"cusspt",
                 searchBoxPlaceHolder:"search for apps",
                 waitForAppsMessage:"please wait...",
                 moreApps:"more apps",
@@ -212,10 +212,7 @@ rz.widgets.MainNavbarWidget = ruteZangada.widget("rzMainNavbar", rz.widgets.RZMa
             , enableInfiniteScroll: true
             , targetResultElement: ".found-apps-row-container"
             , delayed: function () {
-                //$('.found-apps-row-container > .row').fadeOut(300, function(){ $(this).remove();});
                 $(".delay-message-row").fadeIn(300);
-                //$(".found-apps-row-container").html("");
-                //$(".delay-message-row").addClass("visible");
             }
         };
         var appSearcher = new rz.plugins.SearchDataPlugin(searchOptions);
