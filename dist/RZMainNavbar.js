@@ -147,7 +147,6 @@ rz.widgets.RZMainNavbarRenderingWidgetHelper = {
 rz.widgets.MainNavbarWidget = ruteZangada.widget("rzMainNavbar", rz.widgets.RZMainNavbarWidgetHelper.MainNavbarWidgetInterface, rz.widgets.RZMainNavbarWidgetHelper.MainNavbarWidgetEventHandlers, function () {
     var $this = this;
     $this.renderHelpers = rz.widgets.RZMainNavbarRenderingWidgetHelper;
-
     this.initialize = function (params, initialized) {
         var elementID = generateRandomID(8);
         var defaultParams = {
@@ -199,13 +198,11 @@ rz.widgets.MainNavbarWidget = ruteZangada.widget("rzMainNavbar", rz.widgets.RZMa
     };
 
     var executePostRenderScripts = function () {
-        //displayAppsMenu:true,                                       //defines if apps menu will be displayed
-        //displayUserMenu:true
-        if(params.ui.displayUserMenu){
+        if($this.params.ui.displayUserMenu){
             $('.user-button').popup({popup: $('#' + $this.params.elementID +'usermenupopup'), on: 'click'});
         }
 
-        if(params.ui.displayAppsMenu){
+        if($this.params.ui.displayAppsMenu){
             $('.apps-button').popup({popup: $('#'+ $this.params.elementID + 'appspopup'), on: 'click'});
             var searchOptions = {
                 dataSource: $this.params.uiApiBaseUrl
