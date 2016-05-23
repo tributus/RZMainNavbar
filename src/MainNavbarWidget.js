@@ -4,7 +4,6 @@
 rz.widgets.MainNavbarWidget = ruteZangada.widget("rzMainNavbar", rz.widgets.RZMainNavbarWidgetHelper.MainNavbarWidgetInterface, rz.widgets.RZMainNavbarWidgetHelper.MainNavbarWidgetEventHandlers, function () {
     var $this = this;
     $this.renderHelpers = rz.widgets.RZMainNavbarRenderingWidgetHelper;
-
     this.initialize = function (params, initialized) {
         var elementID = generateRandomID(8);
         var defaultParams = {
