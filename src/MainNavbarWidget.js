@@ -56,23 +56,29 @@ rz.widgets.MainNavbarWidget = ruteZangada.widget("rzMainNavbar", rz.widgets.RZMa
     };
 
     var executePostRenderScripts = function () {
-        $('.apps-button').popup({popup: $('#'+ $this.params.elementID + 'appspopup'), on: 'click'});
-        $('.user-button').popup({popup: $('#' + $this.params.elementID +'usermenupopup'), on: 'click'});
+        //displayAppsMenu:true,                                       //defines if apps menu will be displayed
+        //displayUserMenu:true
+        if(params.ui.displayUserMenu){
+            $('.user-button').popup({popup: $('#' + $this.params.elementID +'usermenupopup'), on: 'click'});
+        }
 
-        var searchOptions = {
-            dataSource: $this.params.uiApiBaseUrl
-            , keySource: "#"+$this.params.elementID+"appSearchBox"
-            , renderResultsMethod: function (searchResult, status, sender, page){
-                $this.params.ui.appsListRenderer($this,searchResult, status, sender, page);
-            }
-            , pageSize: 12
-            , enableInfiniteScroll: true
-            , targetResultElement: ".found-apps-row-container"
-            , delayed: function () {
-                $(".delay-message-row").fadeIn(300);
-            }
-        };
-        var appSearcher = new rz.plugins.SearchDataPlugin(searchOptions);
-        appSearcher.searchData("");
+        if(params.ui.displayAppsMenu){
+            $('.apps-button').popup({popup: $('#'+ $this.params.elementID + 'appspopup'), on: 'click'});
+            var searchOptions = {
+                dataSource: $this.params.uiApiBaseUrl
+                , keySource: "#"+$this.params.elementID+"appSearchBox"
+                , renderResultsMethod: function (searchResult, status, sender, page){
+                    $this.params.ui.appsListRenderer($this,searchResult, status, sender, page);
+                }
+                , pageSize: 12
+                , enableInfiniteScroll: true
+                , targetResultElement: ".found-apps-row-container"
+                , delayed: function () {
+                    $(".delay-message-row").fadeIn(300);
+                }
+            };
+            var appSearcher = new rz.plugins.SearchDataPlugin(searchOptions);
+            appSearcher.searchData("");
+        }
     };
 });
