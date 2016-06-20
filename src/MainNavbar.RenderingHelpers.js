@@ -66,11 +66,12 @@ rz.widgets.RZMainNavbarRenderingWidgetHelper = {
                     }
                 }
 
-                sb.appendFormat('<a id="{1}_usermenuitem_{2}" data-action="{3}" class="item usermenuitem">{0}</a>',
+                sb.appendFormat('<a id="{1}_usermenuitem_{2}" data-action="{3}" class="item usermenuitem" data-behaviors="{4}">{0}</a>',
                     renderer(item),
-                    $this.elementID,
+                    $this.params.elementID,
                     idx++,
-                    item.action
+                    item.action,
+                    item.behaviors || ""
                 );
             });
             sb.appendFormat('                            </div>');

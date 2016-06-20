@@ -73,11 +73,12 @@ rz.widgets.RZMainNavbarRenderingWidgetHelper = {
                     }
                 }
 
-                sb.appendFormat('<a id="{1}_usermenuitem_{2}" data-action="{3}" class="item usermenuitem">{0}</a>',
+                sb.appendFormat('<a id="{1}_usermenuitem_{2}" data-action="{3}" class="item usermenuitem" data-behaviors="{4}">{0}</a>',
                     renderer(item),
-                    $this.elementID,
+                    $this.params.elementID,
                     idx++,
-                    item.action
+                    item.action,
+                    item.behaviors || ""
                 );
             });
             sb.appendFormat('                            </div>');
@@ -228,13 +229,29 @@ rz.widgets.MainNavbarWidget = ruteZangada.widget("rzMainNavbar", rz.widgets.RZMa
         executePostRenderScripts();
     };
 
+    var hasBehavior = function(behavior,el){
+        return getBehaviors(el).indexOf(behavior) != -1;
+    };
+    var getBehaviors = function (el) {
+        var b = $(el.currentTarget).data("behaviors");
+        if(b===undefined){
+            return [];
+        }
+        else{
+            return b.split(";");
+        }
+    };
+
     var executePostRenderScripts = function () {
         if($this.params.ui.displayUserMenu){
             $('#' + $this.params.elementID + ' .user-button').popup({popup: $('#' + $this.params.elementID +'usermenupopup'), on: 'click'});
             $('#' + $this.params.elementID + ' .usermenuitem').click(function(e){
                 var action = $(e.currentTarget).data("action");
                 if(action !==undefined){
-                    $this.raiseEvent("usermenuitemclick",{action:action},$this);
+                    if(!hasBehavior("no-hide-popup-when-click",e)){
+                        $('#' + $this.params.elementID + ' .user-button').popup('hide');
+                    }
+                    $this.raiseEvent("usermenuitemclick",{action:action,behaviors:getBehaviors(e)},$this);
                 }
 
                 //return false;

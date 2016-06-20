@@ -37,7 +37,7 @@
             userPicture:undefined
         },
         userMenuItems:[
-            {text:"My profile", action:"myprofile"},
+            {text:"My profile", action:"myprofile",behaviors:"no-hide-popup-when-click;another-behavior"},
             {text:"Messages",action:"messages",labelValue:'3', renderer: "defaultUserMenuItemRendereWithLabel"},
             {text:"Profile",action:"messages", icon:"user", renderer: function(data){
                 return '<div title="using a custom menuitem renderer"><i class="* icon"></i> '

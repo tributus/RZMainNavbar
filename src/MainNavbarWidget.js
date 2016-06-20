@@ -52,13 +52,29 @@ rz.widgets.MainNavbarWidget = ruteZangada.widget("rzMainNavbar", rz.widgets.RZMa
         executePostRenderScripts();
     };
 
+    var hasBehavior = function(behavior,el){
+        return getBehaviors(el).indexOf(behavior) != -1;
+    };
+    var getBehaviors = function (el) {
+        var b = $(el.currentTarget).data("behaviors");
+        if(b===undefined){
+            return [];
+        }
+        else{
+            return b.split(";");
+        }
+    };
+
     var executePostRenderScripts = function () {
         if($this.params.ui.displayUserMenu){
             $('#' + $this.params.elementID + ' .user-button').popup({popup: $('#' + $this.params.elementID +'usermenupopup'), on: 'click'});
             $('#' + $this.params.elementID + ' .usermenuitem').click(function(e){
                 var action = $(e.currentTarget).data("action");
                 if(action !==undefined){
-                    $this.raiseEvent("usermenuitemclick",{action:action},$this);
+                    if(!hasBehavior("no-hide-popup-when-click",e)){
+                        $('#' + $this.params.elementID + ' .user-button').popup('hide');
+                    }
+                    $this.raiseEvent("usermenuitemclick",{action:action,behaviors:getBehaviors(e)},$this);
                 }
 
                 //return false;
