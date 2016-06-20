@@ -28,12 +28,10 @@ rz.widgets.MainNavbarWidget = ruteZangada.widget("rzMainNavbar", rz.widgets.RZMa
                 searchBoxPlaceHolder:"search for apps",
                 waitForAppsMessage:"please wait...",
                 moreApps:"more apps",
-                myprofile:"My profile",
-                messages:"Messages",
-                exit:"Exit",
                 notfound:"no items found",
                 loadapperror:"an error has ocurred when searching for apps. Try again in few seconds. If the problem remains, contact technical support."
-            }
+            },
+            userMenuItems:[]
         };
         $this.params = $.extend(true, {}, defaultParams, params);
         initialized();
@@ -56,11 +54,19 @@ rz.widgets.MainNavbarWidget = ruteZangada.widget("rzMainNavbar", rz.widgets.RZMa
 
     var executePostRenderScripts = function () {
         if($this.params.ui.displayUserMenu){
-            $('.user-button').popup({popup: $('#' + $this.params.elementID +'usermenupopup'), on: 'click'});
+            $('#' + $this.params.elementID + ' .user-button').popup({popup: $('#' + $this.params.elementID +'usermenupopup'), on: 'click'});
+            $('#' + $this.params.elementID + ' .usermenuitem').click(function(e){
+                var action = $(e.currentTarget).data("action");
+                if(action !==undefined){
+                    $this.raiseEvent("usermenuitemclick",{action:action},$this);
+                }
+
+                //return false;
+            });
         }
 
         if($this.params.ui.displayAppsMenu){
-            $('.apps-button').popup({popup: $('#'+ $this.params.elementID + 'appspopup'), on: 'click'});
+            $('#' + $this.params.elementID + ' .apps-button').popup({popup: $('#'+ $this.params.elementID + 'appspopup'), on: 'click'});
             var searchOptions = {
                 dataSource: $this.params.uiApiBaseUrl
                 , keySource: "#"+$this.params.elementID+"appSearchBox"

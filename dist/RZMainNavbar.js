@@ -3,12 +3,16 @@
  */
 rz.widgets.RZMainNavbarWidgetHelper = {
     MainNavbarWidgetInterface : [],
-    MainNavbarWidgetEventHandlers : []
+    MainNavbarWidgetEventHandlers : ["usermenuitemclick"]
 };
 /**
  * Created by anderson.santos on 13/05/2016.
  */
 rz.widgets.RZMainNavbarRenderingWidgetHelper = {
+    userMenuitemRenderers:{},
+    createUserMenuitemRenderers: function (n, d) {
+        this.userMenuitemRenderers[n] = d;
+    },
     renderAppsMenu: function ($this, sb) {
         if ($this.params.ui.displayAppsMenu) {
             sb.appendFormat('        <div class="ui top right pointing dropdown item apps-button rz-navbar-button">');
@@ -38,7 +42,7 @@ rz.widgets.RZMainNavbarRenderingWidgetHelper = {
         }
     },
     renderUserMenu: function ($this, sb) {
-        if ($this.params.ui.displayUserMenu) {
+        if ($this.params.ui.displayUserMenu && $this.params.userMenuItems !==undefined && $this.params.userMenuItems.length > 0) {
             var uspic = rz.widgets.RZMainNavbarRenderingWidgetHelper.resolveUserPicture($this);
             sb.appendFormat('        <div class="ui top right pointing dropdown item user-button rz-navbar-button">');
             sb.appendFormat('            <div>{0}</div>', uspic);
@@ -52,14 +56,30 @@ rz.widgets.RZMainNavbarRenderingWidgetHelper = {
             sb.appendFormat('                        </div>');
             sb.appendFormat('                        <div class="column">');
             sb.appendFormat('                            <div class="ui secondary vertical rz menu">');
-            sb.appendFormat('                                <a class="item">');
-            sb.appendFormat('                                    {0}',$this.params.language.myprofile);
-            sb.appendFormat('                                </a>');
-            sb.appendFormat('                                <a class="item">');
-            sb.appendFormat('                                    {0}',$this.params.language.messages);
-            sb.appendFormat('                                    <div class="ui orange label">3</div>');
-            sb.appendFormat('                                </a>');
-            sb.appendFormat('                                <a class="item">{0}</a>',$this.params.language.exit);
+
+            var idx = 0;
+            $this.params.userMenuItems.forEach(function(item){
+                var renderer = undefined;
+                if(item.renderer===undefined){
+                    renderer = $this.renderHelpers.userMenuitemRenderers["defaultUserMenuItemRenderer"];
+                }
+                else{
+                    if(typeof(item.renderer)=="string"){
+                        renderer = $this.renderHelpers.userMenuitemRenderers[item.renderer];
+
+                    }
+                    else{
+                        renderer = item.renderer;
+                    }
+                }
+
+                sb.appendFormat('<a id="{1}_usermenuitem_{2}" data-action="{3}" class="item usermenuitem">{0}</a>',
+                    renderer(item),
+                    $this.elementID,
+                    idx++,
+                    item.action
+                );
+            });
             sb.appendFormat('                            </div>');
             sb.appendFormat('                        </div>');
             sb.appendFormat('                    </div>');
@@ -142,6 +162,19 @@ rz.widgets.RZMainNavbarRenderingWidgetHelper = {
 };
 
 /**
+ * Created by anderson.santos on 20/06/2016.
+ */
+rz.widgets.RZMainNavbarRenderingWidgetHelper.createUserMenuitemRenderers("defaultUserMenuItemRenderer",function (data) {
+    return data.text;
+});
+
+/**
+ * Created by anderson.santos on 20/06/2016.
+ */
+rz.widgets.RZMainNavbarRenderingWidgetHelper.createUserMenuitemRenderers("defaultUserMenuItemRendereWithLabel",function (data) {
+    return '* <div class="ui orange label menu-item-label">*</div>'.replace("*", data.text).replace("*", data.labelValue || "");
+});
+/**
  * Created by anderson.santos on 11/05/2016.
  */
 rz.widgets.MainNavbarWidget = ruteZangada.widget("rzMainNavbar", rz.widgets.RZMainNavbarWidgetHelper.MainNavbarWidgetInterface, rz.widgets.RZMainNavbarWidgetHelper.MainNavbarWidgetEventHandlers, function () {
@@ -171,12 +204,10 @@ rz.widgets.MainNavbarWidget = ruteZangada.widget("rzMainNavbar", rz.widgets.RZMa
                 searchBoxPlaceHolder:"search for apps",
                 waitForAppsMessage:"please wait...",
                 moreApps:"more apps",
-                myprofile:"My profile",
-                messages:"Messages",
-                exit:"Exit",
                 notfound:"no items found",
                 loadapperror:"an error has ocurred when searching for apps. Try again in few seconds. If the problem remains, contact technical support."
-            }
+            },
+            userMenuItems:[]
         };
         $this.params = $.extend(true, {}, defaultParams, params);
         initialized();
@@ -199,11 +230,19 @@ rz.widgets.MainNavbarWidget = ruteZangada.widget("rzMainNavbar", rz.widgets.RZMa
 
     var executePostRenderScripts = function () {
         if($this.params.ui.displayUserMenu){
-            $('.user-button').popup({popup: $('#' + $this.params.elementID +'usermenupopup'), on: 'click'});
+            $('#' + $this.params.elementID + ' .user-button').popup({popup: $('#' + $this.params.elementID +'usermenupopup'), on: 'click'});
+            $('#' + $this.params.elementID + ' .usermenuitem').click(function(e){
+                var action = $(e.currentTarget).data("action");
+                if(action !==undefined){
+                    $this.raiseEvent("usermenuitemclick",{action:action},$this);
+                }
+
+                //return false;
+            });
         }
 
         if($this.params.ui.displayAppsMenu){
-            $('.apps-button').popup({popup: $('#'+ $this.params.elementID + 'appspopup'), on: 'click'});
+            $('#' + $this.params.elementID + ' .apps-button').popup({popup: $('#'+ $this.params.elementID + 'appspopup'), on: 'click'});
             var searchOptions = {
                 dataSource: $this.params.uiApiBaseUrl
                 , keySource: "#"+$this.params.elementID+"appSearchBox"

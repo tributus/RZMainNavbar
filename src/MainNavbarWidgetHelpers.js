@@ -3,5 +3,5 @@
  */
 rz.widgets.RZMainNavbarWidgetHelper = {
     MainNavbarWidgetInterface : [],
-    MainNavbarWidgetEventHandlers : []
+    MainNavbarWidgetEventHandlers : ["usermenuitemclick"]
 };

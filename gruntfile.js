@@ -5,6 +5,8 @@ module.exports = function (grunt) {
                 srcFiles: [
                     "src/MainNavbarWidgetHelpers.js",
                     "src/MainNavbar.RenderingHelpers.js",
+                    "src/UserMenuitemRenderers/defaultUserMenuItemRenderer.js",
+                    "src/UserMenuitemRenderers/defaultUserMenuItemRendererWithLabel.js",
                     "src/MainNavbarWidget.js"
                 ],
                 setupCSSRefs: function () {

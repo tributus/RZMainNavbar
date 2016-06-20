@@ -188,3 +188,6 @@
   color: #AEAEAE;
   font-style: italic;
 }
+.menu-item-label:empty {
+  display: none;
+}

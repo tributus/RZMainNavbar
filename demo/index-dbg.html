@@ -22,6 +22,8 @@
     <script src="../bower_components/semantic-ui-popup/popup.min.js" type="text/javascript"></script>
     <script src="../src/MainNavbarWidgetHelpers.js" type="text/javascript"></script>
         <script src="../src/MainNavbar.RenderingHelpers.js" type="text/javascript"></script>
+        <script src="../src/UserMenuitemRenderers/defaultUserMenuItemRenderer.js" type="text/javascript"></script>
+        <script src="../src/UserMenuitemRenderers/defaultUserMenuItemRendererWithLabel.js" type="text/javascript"></script>
         <script src="../src/MainNavbarWidget.js" type="text/javascript"></script>
         
 </head>
@@ -33,9 +35,24 @@
         userInfo:{
             fullName:"Anderson N. Santos",
             userPicture:undefined
-        }
+        },
+        userMenuItems:[
+            {text:"My profile", action:"myprofile"},
+            {text:"Messages",action:"messages",labelValue:'3', renderer: "defaultUserMenuItemRendereWithLabel"},
+            {text:"Profile",action:"messages", icon:"user", renderer: function(data){
+                return '<div title="using a custom menuitem renderer"><i class="* icon"></i> '
+                                .replace("*", data.icon)
+                                + data.text
+                                + '</div>';
+            }},
+            {text:"Exit", action:"exit"}
+        ]
     };
     var navbar = ruteZangada.renderWidget("rzMainNavbar", "mainnav",opt);
+
+    navbar.on("usermenuitemclick",function(sender,e){
+        console.log(sender, "raises a event with", e, "args");
+    });
 </script>
 </body>
 </html>

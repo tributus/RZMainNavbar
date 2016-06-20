@@ -2,6 +2,10 @@
  * Created by anderson.santos on 13/05/2016.
  */
 rz.widgets.RZMainNavbarRenderingWidgetHelper = {
+    userMenuitemRenderers:{},
+    createUserMenuitemRenderers: function (n, d) {
+        this.userMenuitemRenderers[n] = d;
+    },
     renderAppsMenu: function ($this, sb) {
         if ($this.params.ui.displayAppsMenu) {
             sb.appendFormat('        <div class="ui top right pointing dropdown item apps-button rz-navbar-button">');
@@ -31,7 +35,7 @@ rz.widgets.RZMainNavbarRenderingWidgetHelper = {
         }
     },
     renderUserMenu: function ($this, sb) {
-        if ($this.params.ui.displayUserMenu) {
+        if ($this.params.ui.displayUserMenu && $this.params.userMenuItems !==undefined && $this.params.userMenuItems.length > 0) {
             var uspic = rz.widgets.RZMainNavbarRenderingWidgetHelper.resolveUserPicture($this);
             sb.appendFormat('        <div class="ui top right pointing dropdown item user-button rz-navbar-button">');
             sb.appendFormat('            <div>{0}</div>', uspic);
@@ -45,14 +49,30 @@ rz.widgets.RZMainNavbarRenderingWidgetHelper = {
             sb.appendFormat('                        </div>');
             sb.appendFormat('                        <div class="column">');
             sb.appendFormat('                            <div class="ui secondary vertical rz menu">');
-            sb.appendFormat('                                <a class="item">');
-            sb.appendFormat('                                    {0}',$this.params.language.myprofile);
-            sb.appendFormat('                                </a>');
-            sb.appendFormat('                                <a class="item">');
-            sb.appendFormat('                                    {0}',$this.params.language.messages);
-            sb.appendFormat('                                    <div class="ui orange label">3</div>');
-            sb.appendFormat('                                </a>');
-            sb.appendFormat('                                <a class="item">{0}</a>',$this.params.language.exit);
+
+            var idx = 0;
+            $this.params.userMenuItems.forEach(function(item){
+                var renderer = undefined;
+                if(item.renderer===undefined){
+                    renderer = $this.renderHelpers.userMenuitemRenderers["defaultUserMenuItemRenderer"];
+                }
+                else{
+                    if(typeof(item.renderer)=="string"){
+                        renderer = $this.renderHelpers.userMenuitemRenderers[item.renderer];
+
+                    }
+                    else{
+                        renderer = item.renderer;
+                    }
+                }
+
+                sb.appendFormat('<a id="{1}_usermenuitem_{2}" data-action="{3}" class="item usermenuitem">{0}</a>',
+                    renderer(item),
+                    $this.elementID,
+                    idx++,
+                    item.action
+                );
+            });
             sb.appendFormat('                            </div>');
             sb.appendFormat('                        </div>');
             sb.appendFormat('                    </div>');
