@@ -20,13 +20,13 @@
     <script src="../bower_components/semantic-ui-form/form.min.js" type="text/javascript"></script>
     <script src="../bower_components/semantic-ui-transition/transition.min.js" type="text/javascript"></script>
     <script src="../bower_components/semantic-ui-popup/popup.min.js" type="text/javascript"></script>
-    <%= options.setupJSRefs(options.srcFiles) %>
+    <%= options.setupJSRefs(options.demoRefsFiles) %>
 </head>
 <body class="rz-theme-light">
 <nav id="mainnav" class="navbar rz-navbar"></nav>
 <script>
     var opt = {
-        uiApiBaseUrl:"http://localhost:3000/api/apps",
+        uiApiBaseUrl:"http://localhost:3010/api/apps",
         userInfo:{
             fullName:"Anderson N. Santos",
             userPicture:undefined

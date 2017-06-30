@@ -5,8 +5,13 @@ module.exports = function (grunt) {
                 srcFiles: [
                     "src/MainNavbarWidgetHelpers.js",
                     "src/MainNavbar.RenderingHelpers.js",
-                    "src/UserMenuitemRenderers/defaultUserMenuItemRenderer.js",
-                    "src/UserMenuitemRenderers/defaultUserMenuItemRendererWithLabel.js",
+                    "src/MainNavbarWidget.js"
+                ],
+                demoRefsFiles: [
+                    "dist/extensions/MenuitemRenderers/defaultUserMenuItemRenderer/defaultUserMenuItemRenderer.js",
+                    "dist/extensions/MenuitemRenderers/defaultUserMenuItemRendererWithLabel/defaultUserMenuItemRendererWithLabel.js",
+                    "src/MainNavbarWidgetHelpers.js",
+                    "src/MainNavbar.RenderingHelpers.js",
                     "src/MainNavbarWidget.js"
                 ],
                 setupCSSRefs: function () {
@@ -39,11 +44,20 @@ module.exports = function (grunt) {
             uglify: {
                 options: {
                     mangle: false
-                }
-                ,
+                },
                 my_target: {
                     files: {
                         "dist/RZMainNavbar.min.js": ['dist/RZMainNavbar.js']
+                    }
+                },
+                defaultUserMenuItemRenderer:{
+                    files:{
+                        "dist/extensions/MenuitemRenderers/defaultUserMenuItemRenderer/defaultUserMenuItemRenderer.min.js": ['src/extensions/MenuitemRenderers/defaultUserMenuItemRenderer/defaultUserMenuItemRenderer.js']
+                    }
+                },
+                defaultUserMenuItemRendererWithLabel:{
+                    files:{
+                        "dist/extensions/MenuitemRenderers/defaultUserMenuItemRendererWithLabel/defaultUserMenuItemRendererWithLabel.min.js": ['src/extensions/MenuitemRenderers/defaultUserMenuItemRendererWithLabel/defaultUserMenuItemRendererWithLabel.js']
                     }
                 }
             },
@@ -95,7 +109,28 @@ module.exports = function (grunt) {
                 },
                 src: 'src/demo-templates/demo.html.ejs',
                 dest: 'demo/index.html'
+            },
+            manifest:{
+                src: 'manifest.json',
+                dest: 'dist/manifest.json'
+            },
+            ext_defaultUserMenuItemRenderer:{
+               dest:"dist/extensions/MenuitemRenderers/defaultUserMenuItemRenderer/defaultUserMenuItemRenderer.js",
+               src: 'src/extensions/MenuitemRenderers/defaultUserMenuItemRenderer/defaultUserMenuItemRenderer.js'
+            },
+            ext_defaultUserMenuItemRendererWithLabel:{
+                dest: "dist/extensions/MenuitemRenderers/defaultUserMenuItemRendererWithLabel/defaultUserMenuItemRendererWithLabel.js",
+                src:'src/extensions/MenuitemRenderers/defaultUserMenuItemRendererWithLabel/defaultUserMenuItemRendererWithLabel.js'
+            },
+            ext_defaultUserMenuItemRenderer_manifest:{
+               dest:"dist/extensions/MenuitemRenderers/defaultUserMenuItemRenderer/manifest.json",
+               src: 'src/extensions/MenuitemRenderers/defaultUserMenuItemRenderer/manifest.json'
+            },
+            ext_defaultUserMenuItemRendererWithLabel_manifest:{
+                dest: "dist/extensions/MenuitemRenderers/defaultUserMenuItemRendererWithLabel/manifest.json",
+                src:'src/extensions/MenuitemRenderers/defaultUserMenuItemRendererWithLabel/manifest.json'
             }
+
             /*,demo_js:{
                 expand:true,
                 flatten:true,

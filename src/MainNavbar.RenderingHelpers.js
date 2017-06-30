@@ -2,10 +2,6 @@
  * Created by anderson.santos on 13/05/2016.
  */
 rz.widgets.RZMainNavbarRenderingWidgetHelper = {
-    userMenuitemRenderers:{},
-    createUserMenuitemRenderers: function (n, d) {
-        this.userMenuitemRenderers[n] = d;
-    },
     renderAppsMenu: function ($this, sb) {
         if ($this.params.ui.displayAppsMenu) {
             sb.appendFormat('        <div class="ui top right pointing dropdown item apps-button rz-navbar-button">');
@@ -54,12 +50,11 @@ rz.widgets.RZMainNavbarRenderingWidgetHelper = {
             $this.params.userMenuItems.forEach(function(item){
                 var renderer = undefined;
                 if(item.renderer===undefined){
-                    renderer = $this.renderHelpers.userMenuitemRenderers["defaultUserMenuItemRenderer"];
+                    renderer = rz.widgets.extensions.getExtension("defaultUserMenuItemRenderer", "rutezangada.widgets.RZMainNavbarWidget.MenuitemRenderer");
                 }
                 else{
                     if(typeof(item.renderer)=="string"){
-                        renderer = $this.renderHelpers.userMenuitemRenderers[item.renderer];
-
+                        renderer = rz.widgets.extensions.getExtension(item.renderer, "rutezangada.widgets.RZMainNavbarWidget.MenuitemRenderer");
                     }
                     else{
                         renderer = item.renderer;

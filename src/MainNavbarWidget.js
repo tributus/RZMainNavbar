@@ -11,7 +11,7 @@ rz.widgets.MainNavbarWidget = ruteZangada.widget("rzMainNavbar", rz.widgets.RZMa
             uiApiBaseUrl:"http://localhost:3000/api/apps",                  //default api url
             brandNavUrl:"#",                                                //url for brand link
             userInfo:{                                                      //logged user info
-                fullName:"unknow user",
+                fullName:"unknown user",
                 userPicture:undefined,
                 userName:undefined
             },

@@ -1,0 +1,40 @@
+{
+  "version":"0.1.0",
+  "name":"RZMainNavbarWidget",
+  "description":"Main Navigation Bar Widget",
+  "icons":{
+    "small":"rzmainnavbar-small.png",
+    "normal":"rzmainnavbar-normal.png",
+    "large":"rzmainnavbar-large.png"
+  },
+  "developer":{
+    "name":"Anderson Norberto Santos",
+    "url":"https://github.com/tributus"
+  },
+  "categories":["toolbars","actionbars","navigation"],
+  "dependencies":{
+    "script":[
+      {"name":"rutezangada-clientengine.js", "version":"0.8.0"},
+      {"name":"rutezangada-searchdataplugin.js","version":"0.4.0"}
+    ],
+    "stylesheet":[
+      {"name":"semantic-ui-reset/reset.css", "version":"2.1.7"},
+      {"name":"semantic-ui-site/site.css", "version":"2.1.7"},
+      {"name":"semantic-ui-site/transition.css", "version":"2.1.7"},
+      {"name":"semantic-ui-segment/icon.css", "version":"2.1.7"},
+      {"name":"semantic-ui-segment/form.css", "version":"2.1.7"},
+      {"name":"semantic-ui-segment/menu.css", "version":"2.1.7"},
+      {"name":"semantic-ui-segment/popup.css", "version":"2.1.7"},
+      {"name":"semantic-ui-segment/grid.css", "version":"2.1.7"},
+      {"name":"semantic-ui-segment/label.css", "version":"2.1.7"},
+      {"name":"RZMainNavbar.css", "version":"0.1.0"}
+    ]
+  },
+  "extensions":
+  [
+    {
+      "name": "Menu Item Renderer",
+      "type":"rutezangada.widgets.RZMainNavbarWidget.MenuitemRenderer"
+    }
+  ]
+}

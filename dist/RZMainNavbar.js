@@ -9,10 +9,6 @@ rz.widgets.RZMainNavbarWidgetHelper = {
  * Created by anderson.santos on 13/05/2016.
  */
 rz.widgets.RZMainNavbarRenderingWidgetHelper = {
-    userMenuitemRenderers:{},
-    createUserMenuitemRenderers: function (n, d) {
-        this.userMenuitemRenderers[n] = d;
-    },
     renderAppsMenu: function ($this, sb) {
         if ($this.params.ui.displayAppsMenu) {
             sb.appendFormat('        <div class="ui top right pointing dropdown item apps-button rz-navbar-button">');
@@ -61,12 +57,11 @@ rz.widgets.RZMainNavbarRenderingWidgetHelper = {
             $this.params.userMenuItems.forEach(function(item){
                 var renderer = undefined;
                 if(item.renderer===undefined){
-                    renderer = $this.renderHelpers.userMenuitemRenderers["defaultUserMenuItemRenderer"];
+                    renderer = rz.widgets.extensions.getExtension("defaultUserMenuItemRenderer", "rutezangada.widgets.RZMainNavbarWidget.MenuitemRenderer");
                 }
                 else{
                     if(typeof(item.renderer)=="string"){
-                        renderer = $this.renderHelpers.userMenuitemRenderers[item.renderer];
-
+                        renderer = rz.widgets.extensions.getExtension(item.renderer, "rutezangada.widgets.RZMainNavbarWidget.MenuitemRenderer");
                     }
                     else{
                         renderer = item.renderer;
@@ -163,19 +158,6 @@ rz.widgets.RZMainNavbarRenderingWidgetHelper = {
 };
 
 /**
- * Created by anderson.santos on 20/06/2016.
- */
-rz.widgets.RZMainNavbarRenderingWidgetHelper.createUserMenuitemRenderers("defaultUserMenuItemRenderer",function (data) {
-    return data.text;
-});
-
-/**
- * Created by anderson.santos on 20/06/2016.
- */
-rz.widgets.RZMainNavbarRenderingWidgetHelper.createUserMenuitemRenderers("defaultUserMenuItemRendereWithLabel",function (data) {
-    return '* <div class="ui orange label menu-item-label">*</div>'.replace("*", data.text).replace("*", data.labelValue || "");
-});
-/**
  * Created by anderson.santos on 11/05/2016.
  */
 rz.widgets.MainNavbarWidget = ruteZangada.widget("rzMainNavbar", rz.widgets.RZMainNavbarWidgetHelper.MainNavbarWidgetInterface, rz.widgets.RZMainNavbarWidgetHelper.MainNavbarWidgetEventHandlers, function () {
@@ -188,7 +170,7 @@ rz.widgets.MainNavbarWidget = ruteZangada.widget("rzMainNavbar", rz.widgets.RZMa
             uiApiBaseUrl:"http://localhost:3000/api/apps",                  //default api url
             brandNavUrl:"#",                                                //url for brand link
             userInfo:{                                                      //logged user info
-                fullName:"unknow user",
+                fullName:"unknown user",
                 userPicture:undefined,
                 userName:undefined
             },

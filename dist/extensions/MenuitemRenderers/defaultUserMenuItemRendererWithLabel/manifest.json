@@ -1,0 +1,9 @@
+{
+  "version":"0.1.0",
+  "name":"rutezangada.widgets.RZMainNavbarWidget.MenuitemRenderer.defaultUserMenuItemRendererWithLabel",
+  "description":"User Menuitem Renderer with Label",
+  "developer":{
+    "name":"Anderson Norberto Santos",
+    "url":"https://github.com/tributus"
+  }
+}

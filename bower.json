@@ -21,7 +21,7 @@
     "tests"
   ],
   "devDependencies": {
-    "RZClientEngine": "rutezangada-client-engine#^0.0.8",
+    "RZClientEngine": "rutezangada-clientengine#^0.8.0",
     "rutezangada-searchdataplugin": "^0.4.0",
     "semantic-ui-reset": "^2.1.7",
     "semantic-ui-site": "^2.1.7",
