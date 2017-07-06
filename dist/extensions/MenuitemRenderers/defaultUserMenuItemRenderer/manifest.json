@@ -5,5 +5,8 @@
   "developer":{
     "name":"Anderson Norberto Santos",
     "url":"https://github.com/tributus"
-  }
+  },
+  "dependencies":[
+      {"name":"rutezangada-clientengine.js", "version":"0.8.0"}
+  ]
 }
