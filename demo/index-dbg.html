@@ -31,7 +31,21 @@
 <nav id="mainnav" class="navbar rz-navbar"></nav>
 <script>
     var opt = {
-        uiApiBaseUrl:"http://localhost:3010/api/apps",
+        uiApiBaseUrl:function(searchKey,page,callback){
+            var data = [
+                {
+                  appuid:"123",
+                  label:"Admin App"
+                },
+                {
+                  appuid:"456",
+                  iconurl:"data:image/png;base64,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",
+                  label:"Customer Settings"
+                }
+            ];
+            callback(data,"success");
+        },
+        onAppClick:"/apps/{appuid}/home",
         userInfo:{
             fullName:"Anderson N. Santos",
             userPicture:undefined

@@ -92,6 +92,22 @@ rz.widgets.RZMainNavbarRenderingWidgetHelper = {
         }
     },
     renderAppList : function ($this,searchResult, status, sender, page) {
+        var getBase64RowData = function(data){
+            return btoa(JSON.stringify(data));
+        }
+        var resolveHref = function(data){
+            if(typeof $this.params.onAppClick=="function"){
+                return "#";
+            }
+            else{
+                var url = $this.params.onAppClick;
+                for(var prop in data){
+                    var regexp = new RegExp("{" + prop + "}","g");
+                    url = url.replace(regexp,(data[prop] || ""));
+                }
+                return url;
+            }
+        }
         if (status == "success") {
             if (searchResult !== undefined && searchResult.length > 0) {
                 var sb = new StringBuilder();
@@ -101,8 +117,15 @@ rz.widgets.RZMainNavbarRenderingWidgetHelper = {
                         sb.append('<div class="row found-apps-row">');
                     }
                     sb.appendFormat('<div class="column">');
-                    sb.appendFormat('    <a href="apps?appid={0}" class="app-button">', row.appuid);
-                    sb.appendFormat('        <img src="{0}">', row.iconurl);
+
+                    sb.appendFormat('    <a href="{0}" class="app-button" data-appdata={1}>',resolveHref(row),getBase64RowData(row));
+
+                    if(row.iconurl){
+                        sb.appendFormat('        <div class="img" style="background:url(\'{0}\')"></div>', row.iconurl);
+                    }
+                    else{
+                        sb.appendFormat('        <div class="img"></div>');
+                    }
                     sb.appendFormat('        <span>{0}</span>', row.label);
                     sb.appendFormat('    </a>');
                     sb.appendFormat('</div>');
@@ -169,6 +192,7 @@ rz.widgets.MainNavbarWidget = ruteZangada.widget("rzMainNavbar", rz.widgets.RZMa
             elementID: elementID,                                           //root element id
             uiApiBaseUrl:"http://localhost:3000/api/apps",                  //default api url
             brandNavUrl:"#",                                                //url for brand link
+            onAppClick:"apps?appid={appuid}",                               //url to navigate after app menuitem click. (you can use a function here)
             userInfo:{                                                      //logged user info
                 fullName:"unknown user",
                 userPicture:undefined,
@@ -235,8 +259,6 @@ rz.widgets.MainNavbarWidget = ruteZangada.widget("rzMainNavbar", rz.widgets.RZMa
                     }
                     $this.raiseEvent("usermenuitemclick",{action:action,behaviors:getBehaviors(e)},$this);
                 }
-
-                //return false;
             });
         }
 
@@ -257,6 +279,19 @@ rz.widgets.MainNavbarWidget = ruteZangada.widget("rzMainNavbar", rz.widgets.RZMa
             };
             var appSearcher = new rz.plugins.SearchDataPlugin(searchOptions);
             appSearcher.searchData("");
+            if(typeof $this.params.onAppClick=="function"){
+                $('#' + $this.params.elementID + ' .app-button').click(function(el){
+                    var iel = $(el.currentTarget);
+                    var appData = iel.data("appdata");
+                    try{
+                        appData = JSON.parse(atob(appData));
+                        typeof $this.params.onAppClick($this,appData);
+                    }
+                    catch(ex){
+                        console.warn("invalid app data",ex);
+                    }
+                })
+            }
         }
     };
 });

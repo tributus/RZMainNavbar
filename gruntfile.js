@@ -77,6 +77,14 @@ module.exports = function (grunt) {
                     files: {
                         'dist/RZMainNavbar.min.css': 'src/style/style.less'
                     }
+                },
+                 icon_semantic_ui: {
+                    options: {
+                        compress: true
+                    },
+                    files: {
+                        'dist/semantic-ui/icon.min.css': 'src/style/icon.less'
+                    }
                 }
             },
         copy:{
@@ -129,6 +137,10 @@ module.exports = function (grunt) {
             ext_defaultUserMenuItemRendererWithLabel_manifest:{
                 dest: "dist/extensions/MenuitemRenderers/defaultUserMenuItemRendererWithLabel/manifest.json",
                 src:'src/extensions/MenuitemRenderers/defaultUserMenuItemRendererWithLabel/manifest.json'
+            },
+            semantic_ui_icon:{
+                dest: "dist/semantic-ui/icon.css",
+                src:'src/style/icon.less'
             }
 
             /*,demo_js:{

@@ -10,6 +10,7 @@ rz.widgets.MainNavbarWidget = ruteZangada.widget("rzMainNavbar", rz.widgets.RZMa
             elementID: elementID,                                           //root element id
             uiApiBaseUrl:"http://localhost:3000/api/apps",                  //default api url
             brandNavUrl:"#",                                                //url for brand link
+            onAppClick:"apps?appid={appuid}",                               //url to navigate after app menuitem click. (you can use a function here)
             userInfo:{                                                      //logged user info
                 fullName:"unknown user",
                 userPicture:undefined,
@@ -76,8 +77,6 @@ rz.widgets.MainNavbarWidget = ruteZangada.widget("rzMainNavbar", rz.widgets.RZMa
                     }
                     $this.raiseEvent("usermenuitemclick",{action:action,behaviors:getBehaviors(e)},$this);
                 }
-
-                //return false;
             });
         }
 
@@ -98,6 +97,19 @@ rz.widgets.MainNavbarWidget = ruteZangada.widget("rzMainNavbar", rz.widgets.RZMa
             };
             var appSearcher = new rz.plugins.SearchDataPlugin(searchOptions);
             appSearcher.searchData("");
+            if(typeof $this.params.onAppClick=="function"){
+                $('#' + $this.params.elementID + ' .app-button').click(function(el){
+                    var iel = $(el.currentTarget);
+                    var appData = iel.data("appdata");
+                    try{
+                        appData = JSON.parse(atob(appData));
+                        typeof $this.params.onAppClick($this,appData);
+                    }
+                    catch(ex){
+                        console.warn("invalid app data",ex);
+                    }
+                })
+            }
         }
     };
 });
