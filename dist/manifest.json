@@ -28,7 +28,7 @@
       {"name":"semantic-ui-popup-popup.css", "version":"2.1.8"},
       {"name":"semantic-ui-grid-grid.css", "version":"2.1.7"},
       {"name":"semantic-ui-label-label.css", "version":"2.1.7"},
-      {"name":"RZMainNavbar.css", "version":"0.1.0"}
+      {"name":"RZMainNavbarWidget.css", "version":"0.1.0"}
   ],
   "extensions":
   [
